@@ -1,10 +1,13 @@
 import React from 'react';
+import { useNavigate, Outlet } from "react-router-dom";
+import style from './Dashboard.module.css'
+import { exit } from '../../firebase/auth';
 import { Layout, Menu, Avatar, Dropdown, } from 'antd';
 import { MedicineBoxOutlined,FileOutlined } from '@ant-design/icons';
-import style from './Dashboard.module.css'
-import { useNavigate, Outlet } from "react-router-dom";
 
-export const Dashboard = ({exit}) => {
+
+
+export const Dashboard = () => {
 
 
   const layouts =['Medicamentos', 'Registrar Medicina']
@@ -61,7 +64,7 @@ return (
       >
         
         <div className={style.logo} >
-          Casa de la tercera edad
+          Casa de la Tercera Edad
         </div>
         <Menu
           onClick={handleCurrentLayout}
@@ -106,13 +109,8 @@ return (
               padding: 24,
               minHeight: 360,
             }}
-          ><Outlet />
-            {/* {
-            curretLayout==='Medicamentos'?
-              <ListMedicine />:
-              <RegisterMedicine />
-          } */}
-            
+          >
+            <Outlet />
           </div>
         </Content>
         <Footer
@@ -120,7 +118,7 @@ return (
             textAlign: 'center'
           }}
         >
-          Ant Design ©2018 Created by Ant UED
+          Power by Google platform © all rights reserved
         </Footer>
       </Layout>
     </Layout>

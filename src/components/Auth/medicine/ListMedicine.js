@@ -2,7 +2,7 @@
 import {useEffect, useState} from 'react'
 import {getMedicine} from '../../../firebase/medicine'
 import { useNavigate } from "react-router-dom";
-import { Space, Table, Tag, Button } from 'antd';
+import { Space, Table, Tag, Button, DatePicker } from 'antd';
 
 export const ListMedicine = () => {
     const navigate = useNavigate();
@@ -85,8 +85,8 @@ export const ListMedicine = () => {
           }}
         >
          {record.items.map((elemet,i)=><p key={i}>
-          Nombre Comercial <strong>{elemet.nombreComercial} </strong>
-          cantidad: {elemet.cantidad}
+          Nombre Comercial <strong>{elemet.nombreComercial} </strong>,
+          Cantidad: <Tag>{elemet.cantidad} <strong>{elemet.unidadMedida}</strong></Tag>  Gramaje: <strong>{elemet.gramaje}</strong>, Presentación: <strong>{elemet.presentacion}</strong>, Caducidad:{elemet.caducidad.toDate().toLocaleString()}
           </p>)}
         </span>
       ),
