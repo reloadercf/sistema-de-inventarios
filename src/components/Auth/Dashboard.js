@@ -118,7 +118,7 @@ return (
             textAlign: 'center'
           }}
         >
-          Power by Google platform © all rights reserved
+          Power by Google platform ©2022 all rights reserved
         </Footer>
       </Layout>
     </Layout>

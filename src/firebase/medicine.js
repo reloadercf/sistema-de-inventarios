@@ -1,4 +1,4 @@
-import { collection, addDoc, query, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, query, getDocs, updateDoc, doc, getDoc, arrayRemove } from "firebase/firestore";
 import {db} from './firebaseConfig'
 
 export const addMedicine = async (objMedicine)=>{
@@ -17,6 +17,7 @@ export const getMedicine = async () =>{
     const objDataWitID={...el,key:doc.id}
     data.push({...objDataWitID, total:sumQuantities});
     });
+    console.log(data)
     return data
 }
 
@@ -28,12 +29,10 @@ export const getOneMedicine = async (idDoc) =>{
     return docSnap.data()
   } else {
     // doc.data() will be undefined in this case
-    console.log("No such document!");
   }
 }
 
 export const updateAddLotes = async (idDoc, allLotes, newLote) =>{
-  console.log(idDoc, allLotes, newLote)
   const ref = doc(db, "medicine", idDoc);
   return await updateDoc(ref, {
     "lotes":[...allLotes, newLote]
@@ -54,8 +53,14 @@ export const updateAddMedicine = async (idDoc, allMedicines, newMedicine) =>{
     procedencia:newMedicine.procedencia,
     unidadMedida:newMedicine.unidadMedida
   }
-  console.log(medicineObj)
   return await updateDoc(ref, {
     "items":[...allMedicines, medicineObj]
+});
+}
+
+export const deleteLote = async(idDocument,element)=>{
+  const ref = doc(db, "medicine", idDocument);
+  return await updateDoc(ref, {
+    lotes: arrayRemove(element)
 });
 }
