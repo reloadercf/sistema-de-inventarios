@@ -90,7 +90,7 @@ export const AddMedicine = () => {
                 <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
                     label="cantidad"
                     name="cantidad">
-                    <InputNumber />
+                    <InputNumber min={1} />
                 </Form.Item>
 
                 <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}

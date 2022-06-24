@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { Card, Button, Tag } from 'antd';
+import { useNavigate } from "react-router-dom";
+import { Card, Button, Tag, Drawer, InputNumber } from 'antd';
+import { deleteMedicine, updateQuantityMedicine } from '../../../../firebase/medicine'
 
 export const TableMedicine = ({data}) => {
+    const navigate = useNavigate();
+    const [snapshotData, setSnapshotData]=useState(data)
     const tabList = [
         {
           key: 'basics',
@@ -34,7 +38,7 @@ export const TableMedicine = ({data}) => {
                             <td>{data.presentacion}</td>
                             <td>{data.caducidad.toDate().toLocaleDateString("en-US")}</td>
                             <td>
-                                <Tag color="geekblue">
+                                <Tag color="cyan">
                                 {data.lote}
                                 </Tag>
                             </td>
@@ -63,6 +67,38 @@ export const TableMedicine = ({data}) => {
       const onTab1Change = (key) => {
         setActiveTabKey1(key);
       };
+
+      const [visible, setVisible] = useState(false);
+      const [quantityExit, setQuantityExit] = useState(0);
+
+      const showDrawer = () => {
+        setVisible(true);
+      };
+    
+      const onClose = () => {
+        setVisible(false);
+        setQuantityExit(0);
+      };
+
+      const onChange = (value) => {
+        setQuantityExit(value);
+      };
+
+      const subtract = () =>{
+        const operation=data.cantidad-quantityExit
+        if(quantityExit===0){
+          setVisible(false)
+          console.log('no se hace nada')
+        }else if(operation===0){
+          deleteMedicine(data.idMedicine, data).then(success=>window.location.reload()).catch(err=>console.log(err))
+        }else if(operation>0){
+          console.log(operation)
+          setSnapshotData(operation)
+          console.log(snapshotData)
+          updateQuantityMedicine(data.idMedicine, data, snapshotData).then(success=>console.log('bien')).catch(err=>console.log(err))
+        }
+      }
+
   return (
     <div>
         <Card
@@ -70,7 +106,7 @@ export const TableMedicine = ({data}) => {
           width: '100%',
         }}
         title={<strong>{data.nombreComercial}</strong>}
-        extra={<Button danger href="#">Sacar Medicamento</Button>}
+        extra={<Button danger onClick={showDrawer} >Sacar Medicamento</Button>}
         tabList={tabList}
         activeTabKey={activeTabKey1}
         onTabChange={(key) => {
@@ -79,6 +115,12 @@ export const TableMedicine = ({data}) => {
       >
         {contentList[activeTabKey1]}
       </Card>
+      <Drawer width={720} title={`Sacar medicametos de ${data.nombreComercial} `} placement="right" onClose={onClose} visible={visible}>
+        Cantidad que quieres retirar: <InputNumber min={1} max={data.cantidad} defaultValue={data.cantidad} onChange={onChange} />
+        <p style={{'padding':'70px'}}>
+          <Button danger type='primary' onClick={subtract}>Sacar</Button>
+        </p>
+      </Drawer>
         
     </div>
   )

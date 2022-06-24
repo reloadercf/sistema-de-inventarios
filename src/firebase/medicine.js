@@ -1,4 +1,4 @@
-import { collection, addDoc, query, getDocs, updateDoc, doc, getDoc, arrayRemove } from "firebase/firestore";
+import { collection, addDoc, query, getDocs, updateDoc, doc, getDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import {db} from './firebaseConfig'
 
 export const addMedicine = async (objMedicine)=>{
@@ -42,6 +42,7 @@ export const updateAddLotes = async (idDoc, allLotes, newLote) =>{
 export const updateAddMedicine = async (idDoc, allMedicines, newMedicine) =>{
   const ref = doc(db, "medicine", idDoc);
   const medicineObj ={
+    idMedicine:idDoc,
     lote:newMedicine.Lote,
     caducidad:newMedicine.caducidad._d,
     cantidad:newMedicine.cantidad,
@@ -63,4 +64,23 @@ export const deleteLote = async(idDocument,element)=>{
   return await updateDoc(ref, {
     lotes: arrayRemove(element)
 });
+}
+
+export const deleteMedicine = async(idDocument,element)=>{
+  console.log(idDocument,element)
+  const ref = doc(db, "medicine", idDocument);
+  return await updateDoc(ref, {
+    items: arrayRemove(element)
+});
+}
+
+export const updateQuantityMedicine = async(idDocument,element, newElement)=>{
+  console.log(idDocument,element,newElement)
+  const ref = doc(db, "medicine", idDocument);
+  // await updateDoc(ref, {
+  //   items: arrayRemove(element)
+  // });
+  // return await updateDoc(ref, {
+  // "items":arrayUnion(newElement)
+  // });
 }
