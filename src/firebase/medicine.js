@@ -1,8 +1,9 @@
-import { collection, addDoc, query, getDocs, updateDoc, doc, getDoc, arrayRemove, arrayUnion } from "firebase/firestore";
-import {db} from './firebaseConfig'
+import { collection, addDoc, query, getDocs, updateDoc, doc, getDoc, arrayRemove, arrayUnion, serverTimestamp } from "firebase/firestore";
+import {db,auth} from './firebaseConfig'
 
 export const addMedicine = async (objMedicine)=>{
-    return await addDoc(collection(db, "medicine"), objMedicine);
+  const user = auth.currentUser;
+    return await addDoc(collection(db, "medicine"), {...objMedicine, timestamp: serverTimestamp(), userAdd:user.email});
 }
 
 export const getMedicine = async () =>{
@@ -52,7 +53,8 @@ export const updateAddMedicine = async (idDoc, allMedicines, newMedicine) =>{
     nombreComercial:newMedicine.nombreComercial,
     presentacion:newMedicine.presentacion,
     procedencia:newMedicine.procedencia,
-    unidadMedida:newMedicine.unidadMedida
+    unidadMedida:newMedicine.unidadMedida,
+    cantidadPresentacion:newMedicine.cantidadPresentacion
   }
   return await updateDoc(ref, {
     "items":[...allMedicines, medicineObj]
@@ -75,12 +77,13 @@ export const deleteMedicine = async(idDocument,element)=>{
 }
 
 export const updateQuantityMedicine = async(idDocument,element, newElement)=>{
-  console.log(idDocument,element,newElement)
   const ref = doc(db, "medicine", idDocument);
-  // await updateDoc(ref, {
-  //   items: arrayRemove(element)
-  // });
-  // return await updateDoc(ref, {
-  // "items":arrayUnion(newElement)
-  // });
+  await updateDoc(ref, {
+    items: arrayRemove(element)
+  });
+  element.cantidad=newElement;
+  
+  return await updateDoc(ref, {
+  items:arrayUnion(element)
+  });
 }

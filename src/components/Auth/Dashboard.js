@@ -64,7 +64,7 @@ return (
       >
         
         <div className={style.logo} >
-          Casa de la Tercera Edad
+          Inventario CTE
         </div>
         <Menu
           onClick={handleCurrentLayout}

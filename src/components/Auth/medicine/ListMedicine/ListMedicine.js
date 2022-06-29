@@ -39,11 +39,6 @@ export const ListMedicine = () => {
         )
       },
       {
-        title: 'Stock Number',
-        dataIndex: 'stockNumber',
-        key: 'stockNumber',
-      },
-      {
         title:'Actiones',
         key:'key',
         render: (_, record) => (

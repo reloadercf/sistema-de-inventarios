@@ -12,6 +12,7 @@ import { AddLotes } from "./Auth/medicine/ListMedicine/Lotes/AddLotes"
 import { Login } from "./noAuth/Login";
 import {Bienvenida} from "./Bienvenida"
 import { Error } from "./Error";
+import { Success } from "./Auth/medicine/Success";
 
 
 export const Paths = () => {
@@ -41,6 +42,7 @@ export const Paths = () => {
           <Route path="/new" element={<RegisterMedicine />} />
           <Route path="/addmedicine/:idMed" element={<AddMedicine />} />
           <Route path="/addlote/:idMed" element={<AddLotes />} />
+          <Route path="/success/:medicine/:kind/:quantity" element={<Success />} />
         </Route>:
         <Route path="/" element={<Error />} />
       }

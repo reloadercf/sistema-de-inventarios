@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import { getOneMedicine, updateAddMedicine } from '../../../firebase/medicine'
 
@@ -9,16 +9,6 @@ import {
     Input,
     InputNumber,
 } from 'antd';
-
-// nombrecomercial
-// presentacion
-// cantidad presentacion eje 30 tab
-// gramage
-// unidad de medida
-// fecha de caducidad
-// fecha de ingreso
-// procedencia
-// unidades
 
 export const AddMedicine = () => {
     const params = useParams();
@@ -88,9 +78,35 @@ export const AddMedicine = () => {
                 </Form.Item>
 
                 <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
-                    label="cantidad"
+                    label="unidad de medida"
+                    name="unidadMedida">
+                    <Select>
+                        <Option value="caja">caja</Option>
+                        <Option value="frasco">frasco</Option>
+                        <Option value="botella">botella</Option>
+                        <Option value="sobre">sobre</Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
+                    label="cantidad de unidad de medida"
                     name="cantidad">
                     <InputNumber min={1} />
+                </Form.Item>
+
+
+                <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
+                    label="Lote"
+                    name="Lote">
+                    <Select>
+                        {currentMedicine && currentMedicine.lotes.map((lote, i) => <Option value={lote} key={i} >{lote}</Option>)}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
+                    label="gramaje"
+                    name="gramaje">
+                    <Input />
                 </Form.Item>
 
                 <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
@@ -109,28 +125,9 @@ export const AddMedicine = () => {
                 </Form.Item>
 
                 <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
-                    label="Lote"
-                    name="Lote">
-                    <Select>
-                        {currentMedicine && currentMedicine.lotes.map((lote, i) => <Option value={lote} key={i} >{lote}</Option>)}
-                    </Select>
-                </Form.Item>
-
-                <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
-                    label="gramaje"
-                    name="gramaje">
-                    <Input />
-                </Form.Item>
-
-                <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}
-                    label="unidad de medida"
-                    name="unidadMedida">
-                    <Select>
-                        <Option value="caja">caja</Option>
-                        <Option value="frasco">frasco</Option>
-                        <Option value="botella">botella</Option>
-                        <Option value="sobre">sobre</Option>
-                    </Select>
+                    label="cantidad en la presentación"
+                    name="cantidadPresentacion">
+                    <InputNumber min={1} />
                 </Form.Item>
 
                 <Form.Item rules={[{ required: true, message: 'Porfavor llena este campo!' }]}

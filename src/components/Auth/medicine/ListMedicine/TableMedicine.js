@@ -5,7 +5,6 @@ import { deleteMedicine, updateQuantityMedicine } from '../../../../firebase/med
 
 export const TableMedicine = ({data}) => {
     const navigate = useNavigate();
-    const [snapshotData, setSnapshotData]=useState(data)
     const tabList = [
         {
           key: 'basics',
@@ -28,6 +27,7 @@ export const TableMedicine = ({data}) => {
                             <th>Unidad medida</th>
                             <th>Gramaje</th>
                             <th>Presentación</th>
+                            <th>Cantidad presentación</th>
                             <th>Caducidad</th>
                             <th>Lote</th>
                         </tr>
@@ -36,6 +36,7 @@ export const TableMedicine = ({data}) => {
                             <td>{data.unidadMedida}</td>
                             <td>{data.gramaje}</td>
                             <td>{data.presentacion}</td>
+                            <td>{data.cantidadPresentacion}</td>
                             <td>{data.caducidad.toDate().toLocaleDateString("en-US")}</td>
                             <td>
                                 <Tag color="cyan">
@@ -90,12 +91,9 @@ export const TableMedicine = ({data}) => {
           setVisible(false)
           console.log('no se hace nada')
         }else if(operation===0){
-          deleteMedicine(data.idMedicine, data).then(success=>window.location.reload()).catch(err=>console.log(err))
+          deleteMedicine(data.idMedicine, data).then(success=>navigate(`success/${data.nombreComercial}/allDelivery/${quantityExit}`)).catch(err=>console.log(err))
         }else if(operation>0){
-          console.log(operation)
-          setSnapshotData(operation)
-          console.log(snapshotData)
-          updateQuantityMedicine(data.idMedicine, data, snapshotData).then(success=>console.log('bien')).catch(err=>console.log(err))
+          updateQuantityMedicine(data.idMedicine, data, operation).then(success=>navigate(`success/${data.nombreComercial}/delivery/${quantityExit}`)).catch(err=>console.log(err))
         }
       }
 
